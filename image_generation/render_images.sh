@@ -1,0 +1,1 @@
+blender --background --python render_images.py -- --num_images 1 --use_gpu 1 --properties_json data/properties_vegi.json

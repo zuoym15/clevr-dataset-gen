@@ -95,7 +95,7 @@ parser.add_argument('--split', default='new',
     help="Name of the split for which we are rendering. This will be added to " +
          "the names of rendered images, and will also be stored in the JSON " +
          "scene structure for each image.")
-parser.add_argument('--output_image_dir', default='../output/images/',
+parser.add_argument('--output_image_dir', default=os.path.abspath('../output/images/'),
     help="The directory where output images will be stored. It will be " +
          "created if it does not exist.")
 parser.add_argument('--output_scene_dir', default='../output/scenes/',
@@ -234,13 +234,16 @@ def render_scene(args,
   render_args.tile_x = args.render_tile_size
   render_args.tile_y = args.render_tile_size
   if args.use_gpu == 1:
+    bpy.context.user_preferences.system.compute_device_type = 'CUDA'
+    bpy.context.user_preferences.system.compute_device = 'CUDA_0'
     # Blender changed the API for enabling CUDA at some point
-    if bpy.app.version < (2, 78, 0):
-      bpy.context.user_preferences.system.compute_device_type = 'CUDA'
-      bpy.context.user_preferences.system.compute_device = 'CUDA_0'
-    else:
-      cycles_prefs = bpy.context.user_preferences.addons['cycles'].preferences
-      cycles_prefs.compute_device_type = 'CUDA'
+    # print(bpy.app.version)
+    # if bpy.app.version < (2, 78, 0):
+    #   bpy.context.user_preferences.system.compute_device_type = 'CUDA'
+    #   bpy.context.user_preferences.system.compute_device = 'CUDA_0'
+    # else:
+    #   cycles_prefs = bpy.context.user_preferences.addons['cycles'].preferences
+    #   cycles_prefs.compute_device_type = 'CUDA'
 
   # Some CYCLES-specific stuff
   bpy.data.worlds['World'].cycles.sample_as_light = True
@@ -489,7 +492,7 @@ def check_visibility(blender_objects, min_pixels_per_object):
   p = list(img.pixels)
   color_count = Counter((p[i], p[i+1], p[i+2], p[i+3])
                         for i in range(0, len(p), 4))
-  os.remove(path)
+  # os.remove(path)
   if len(color_count) != len(blender_objects) + 1:
     return False
   for _, count in color_count.most_common():

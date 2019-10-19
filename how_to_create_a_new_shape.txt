@@ -1,0 +1,7 @@
+step1: remove unnecessary parts (right click and delete)
+step2: select all other parts (a) and combine them into a single object (ctrl+j)
+step3: rename the object to the same as your file name
+step4: select the object, change the Dimensions (NOT scale) to [2.0, 2.0, 2.0] (unit length)
+step5: remove default materials (https://blender.stackexchange.com/questions/7160/can-i-delete-all-materials-of-all-objects-in-a-scene-quickly/7161)
+step6: SHIFT+CTRL+ALT+C -> choose Origin to Geometry option
+step7: save the file
